@@ -6,7 +6,7 @@ const P = (n) => `/projects/${n}.jpg`
 const wrap = 'mx-auto max-w-6xl px-5'
 const h1 = 'text-3xl md:text-5xl font-bold'
 const h2 = 'text-2xl md:text-3xl font-bold'
-const btn = 'inline-block bg-brand text-white font-bold px-6 py-3 hover:bg-ink'
+const btn = 'inline-block bg-brand text-white font-bold px-6 py-3 hover:bg-neutral-700'
 const nav = [['Home', '/'], ['About', '/about'], ['Projects', '/projects'], ['Properties', '/properties'], ['Contact', '/contact']]
 
 const services = [
@@ -30,7 +30,7 @@ function Header() {
       <div className={wrap + ' h-16 flex items-center justify-between'}>
         <Link to="/" className="flex items-center gap-3" aria-label="MADORI Homes and Properties home">
           <img src="/logo-mark.png" alt="" className="h-8 w-auto" />
-          <span className="font-bold text-base sm:text-lg">MADORI Homes and Properties</span>
+          <span className="leading-tight"><span className="block font-black text-lg sm:inline">MADORI</span> <span className="block text-xs sm:inline sm:text-lg sm:font-bold">Homes and Properties</span></span>
         </Link>
         <nav className="hidden md:flex gap-7 text-sm">
           {nav.map(([t, to]) => <Link key={t} to={to} className="hover:underline underline-offset-4">{t}</Link>)}
@@ -38,8 +38,8 @@ function Header() {
         <button className="md:hidden border border-white/40 px-3 py-1.5 text-sm" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? 'Close' : 'Menu'}</button>
       </div>
       {open && (
-        <nav className="md:hidden px-5 pb-4 flex flex-col gap-3" onClick={() => setOpen(false)}>
-          {nav.map(([t, to]) => <Link key={t} to={to}>{t}</Link>)}
+        <nav className="md:hidden px-5 pb-3 flex flex-col" onClick={() => setOpen(false)}>
+          {nav.map(([t, to]) => <Link key={t} to={to} className="py-3 border-t border-white/15">{t}</Link>)}
         </nav>
       )}
     </header>
@@ -55,7 +55,7 @@ function Grid({ items }) {
   }, [])
   return (
     <>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
         {items.map((g) => (
           <button key={g.src} onClick={() => setView(g)} aria-label={'View larger: ' + g.title}>
             <img src={g.src} alt={g.title} width={g.w} height={g.h} loading="lazy" className="w-full aspect-[4/3] object-cover" />
@@ -66,7 +66,7 @@ function Grid({ items }) {
         <div className="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={view.title} onClick={() => setView(null)}>
           <button className="absolute top-4 right-4 text-white border border-white/50 px-4 py-2" onClick={() => setView(null)}>Close</button>
           <figure onClick={(e) => e.stopPropagation()}>
-            <img src={view.src} alt={view.title} className="max-h-[80vh] max-w-full w-auto mx-auto" />
+            <img src={view.src} alt={view.title} className="max-h-[75dvh] max-w-full w-auto mx-auto" />
             <figcaption className="mt-3 text-white text-center">{view.title}</figcaption>
           </figure>
         </div>
@@ -78,7 +78,7 @@ function Grid({ items }) {
 function Founder() {
   return (
     <div className={wrap + ' py-14 md:py-20 grid md:grid-cols-[1fr_1.5fr] gap-10 items-center'}>
-      <img src="/founder.jpg" alt="Abubakar Aminu, founder of MADORI Homes and Properties" width="900" height="1153" className="w-full max-w-xs aspect-[4/5] object-cover object-top" />
+      <img src="/founder.jpg" alt="Abubakar Aminu, founder of MADORI Homes and Properties" width="900" height="1153" className="w-full max-w-xs mx-auto md:mx-0 aspect-[4/5] object-cover object-top" />
       <div>
         <h2 className={h2}>Abubakar Aminu</h2>
         <p className="mt-1 text-lg text-ink/70">Founder, MADORI Homes and Properties</p>
@@ -94,12 +94,12 @@ function Home() {
       <section className="relative text-white">
         <img src={P('apartment-block')} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/55" />
-        <div className={wrap + ' relative py-24 md:py-40'}>
+        <div className={wrap + ' relative py-16 sm:py-24 md:py-40'}>
           <h1 className={h1 + ' md:text-6xl max-w-2xl'}>Turning Ideas Into Reality</h1>
-          <p className="mt-3 text-lg tracking-widest">DESIGN | BUILD | DELIVER</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/contact" className="inline-block bg-white text-brand font-bold px-6 py-3 hover:bg-soft">Get a quote</Link>
-            <Link to="/projects" className="inline-block border border-white px-6 py-3 hover:bg-white/10">View our projects</Link>
+          <p className="mt-3 text-sm sm:text-lg tracking-[.2em]">DESIGN | BUILD | DELIVER</p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <Link to="/contact" className="inline-block text-center bg-white text-brand font-bold px-6 py-3 hover:bg-soft">Get a quote</Link>
+            <Link to="/projects" className="inline-block text-center border border-white px-6 py-3 hover:bg-white/10">View our projects</Link>
           </div>
         </div>
       </section>
@@ -195,7 +195,7 @@ function Properties() {
 
 function Contact() {
   const [sent, setSent] = useState(false)
-  const field = 'mt-1 w-full border border-ink/30 px-3 py-2.5 font-normal'
+  const field = 'mt-1 w-full border border-ink/30 px-3 py-2.5 text-base font-normal'
   return (
     <section className={wrap + ' py-14 md:py-20 grid md:grid-cols-2 gap-12'}>
       <div>
@@ -224,7 +224,7 @@ function Footer() {
   return (
     <footer className="bg-brand text-white/85">
       <div className={wrap + ' py-10 flex flex-wrap items-end justify-between gap-6 text-sm'}>
-        <img src="/logo-full.png" alt="MADORI Global Concept, RC-9454059" className="h-24 w-auto" />
+        <img src="/logo-full.png" alt="MADORI Global Concept, RC-9454059" className="h-20 sm:h-24 w-auto" />
         <div className="space-y-1 sm:text-right">
           <p className="text-white font-bold">Turning Ideas Into Reality</p>
           <p>info@madoriconcept.com</p>
