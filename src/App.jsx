@@ -17,6 +17,16 @@ const services = [
   ['Design and approvals', 'Drawings, estimates and permits handled for you.'],
   ['Property sales and lettings', 'Buying, selling, renting and managing property.'],
 ]
+const story = [
+  'Mallammadori is a town in Jigawa State, Nigeria, and it holds a special place in my life because it is where I was born.',
+  'The name Madori was inspired by my birthplace and has become an important part of my professional identity. It reflects my roots, personal journey, and ambition to build a meaningful career in architecture and the built environment.',
+  'Through my work in architectural design, I aim to contribute to the development of functional, modern, and valuable buildings while continuously improving my skills and professional standards.',
+  'For me, Madori is more than a name; it is a connection to where my journey began and a reminder of the vision I hope to achieve through my work in architecture.',
+]
+const phone = ['+234 903 932 6092', 'tel:+2349039326092']
+const waNumber = '2349039326092'
+const email = 'arcabubakaraminu@gmail.com'
+
 const listings = [
   ['4-bedroom detached house', 'Details to come', 'Price on request'],
   ['3-bedroom terrace duplex', 'Details to come', 'Price on request'],
@@ -92,7 +102,7 @@ function Home() {
   return (
     <>
       <section className="relative text-white">
-        <img src={P('apartment-block')} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={P('brick-hip-roof-bungalow')} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/55" />
         <div className={wrap + ' relative py-16 sm:py-24 md:py-40'}>
           <h1 className={h1 + ' md:text-6xl max-w-2xl'}>Turning Ideas Into Reality</h1>
@@ -144,8 +154,9 @@ function About() {
       <section className={wrap + ' py-14 md:py-20 max-w-3xl'}>
         <h1 className={h1}>About us</h1>
         <p className="mt-6 text-lg leading-relaxed">MADORI Homes and Properties is a construction and real estate company. We design and build homes, commercial buildings and mosques, and we help clients buy, sell and rent property. We are part of the MADORI Global Concept group of companies.</p>
-        <h2 className={h2 + ' mt-10'}>Where the name comes from</h2>
-        <p className="mt-4 text-lg leading-relaxed">The name MADORI comes from Malam Madori, a local government area under the Hadejia Emirate in Jigawa State, north-east Nigeria.</p>
+        <h2 className={h2 + ' mt-10'}>The story behind the name</h2>
+        {story.map((t) => <p key={t} className="mt-4 text-lg leading-relaxed">{t}</p>)}
+        <p className="mt-6 font-bold">Abubakar Aminu<span className="block font-normal text-ink/70">Founder, MADORI Homes and Properties</span></p>
       </section>
       <section className="bg-soft"><Founder /></section>
       <section className={wrap + ' py-14 md:py-20'}>
@@ -194,26 +205,35 @@ function Properties() {
 }
 
 function Contact() {
-  const [sent, setSent] = useState(false)
+  const [wa, setWa] = useState('')
+  const send = (e) => {
+    e.preventDefault()
+    const d = Object.fromEntries(new FormData(e.target))
+    const text = `Hello MADORI Homes and Properties,\n\nName: ${d.name}\nPhone: ${d.phone}\nEmail: ${d.email}\nEnquiry: ${d.type}\n\n${d.message || ''}`
+    const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`
+    setWa(url)
+    window.open(url, '_blank', 'noopener')
+  }
   const field = 'mt-1 w-full border border-ink/30 px-3 py-2.5 text-base font-normal'
   return (
     <section className={wrap + ' py-14 md:py-20 grid md:grid-cols-2 gap-12'}>
       <div>
         <h1 className={h1}>Contact us</h1>
         <p className="mt-4 text-lg">Send us a few details about your project and we will reply as soon as we can.</p>
-        <p className="mt-8"><strong>Phone:</strong> +234 000 000 0000</p>
-        <p className="mt-1"><strong>Email:</strong> info@madoriconcept.com</p>
+        <p className="mt-8"><strong>Phone:</strong> <a href={phone[1]} className="underline">{phone[0]}</a></p>
+        <p className="mt-1"><strong>Email:</strong> <a href={'mailto:' + email} className="underline break-all">{email}</a></p>
+        <p className="mt-6"><a href={'https://wa.me/' + waNumber} target="_blank" rel="noopener" className={btn}>Chat on WhatsApp</a></p>
       </div>
-      {sent ? <p className="bg-soft p-6 text-lg self-start">Thank you. We have received your message.</p> : (
-        <form onSubmit={(e) => { e.preventDefault(); setSent(true) }} className="space-y-4">
+      {wa ? <div className="bg-soft p-6 text-lg self-start"><p>Your message is ready in WhatsApp. Tap Send there to deliver it to us.</p><a href={wa} target="_blank" rel="noopener" className={btn + ' mt-4'}>Open WhatsApp again</a></div> : (
+        <form onSubmit={send} className="space-y-4">
           {[['Name', 'text'], ['Phone', 'tel'], ['Email', 'email']].map(([l, t]) => (
-            <label key={l} className="block font-bold text-sm">{l}<input required type={t} className={field} /></label>
+            <label key={l} className="block font-bold text-sm">{l}<input required name={l.toLowerCase()} type={t} className={field} /></label>
           ))}
           <label className="block font-bold text-sm">Enquiry type
-            <select className={field}>{['Building a home', 'Commercial building', 'Renovation', 'Buying a property', 'Renting or managing a property', 'Other'].map((o) => <option key={o}>{o}</option>)}</select>
+            <select name="type" className={field}>{['Building a home', 'Commercial building', 'Renovation', 'Buying a property', 'Renting or managing a property', 'Other'].map((o) => <option key={o}>{o}</option>)}</select>
           </label>
-          <label className="block font-bold text-sm">Message<textarea rows="4" className={field} /></label>
-          <button className={btn}>Send message</button>
+          <label className="block font-bold text-sm">Message<textarea name="message" rows="4" className={field} /></label>
+          <button className={btn}>Send on WhatsApp</button>
         </form>
       )}
     </section>
@@ -227,7 +247,8 @@ function Footer() {
         <img src="/logo-full.png" alt="MADORI Global Concept, RC-9454059" className="h-20 sm:h-24 w-auto" />
         <div className="space-y-1 sm:text-right">
           <p className="text-white font-bold">Turning Ideas Into Reality</p>
-          <p>info@madoriconcept.com</p>
+          <p><a href={'mailto:' + email} className="underline break-all">{email}</a></p>
+          <p><a href={phone[1]} className="underline">{phone[0]}</a></p>
           <p>© {new Date().getFullYear()} MADORI Homes and Properties, a member of MADORI Global Concept.</p>
         </div>
       </div>

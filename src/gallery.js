@@ -97,5 +97,12 @@ export const gallery = [
     "cat": "On site",
     "w": 787,
     "h": 1400
+  },
+  {
+    "src": "/projects/site-blockwork.jpg",
+    "title": "Blockwork and formwork on site",
+    "cat": "On site",
+    "w": 720,
+    "h": 1280
   }
 ]
